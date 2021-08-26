@@ -15,150 +15,159 @@
 @endif
 
 @section('content')
-<!--breadcrumb-->
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">Tables</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Data Table</li>
-            </ol>
-        </nav>
-    </div>
-    <div class="ms-auto">
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary">Settings</button>
-            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                    href="javascript:;">Action</a>
-                <a class="dropdown-item" href="javascript:;">Another action</a>
-                <a class="dropdown-item" href="javascript:;">Something else here</a>
-                <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
+<div class="container">
+    <!--breadcrumb-->
+    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+        <div class="breadcrumb-title pe-3">Information</div>
+        <div class="ps-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0 p-0">
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">User Info</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="ms-auto">
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
+                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown">
+                    <span class="visually-hidden">Toggle Dropdown</span>
+                </button>
+                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                    <a class="dropdown-item" href="javascript:;">Action</a>
+                    <a class="dropdown-item" href="javascript:;">Another action</a>
+                    <a class="dropdown-item" href="javascript:;">Something else here</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="javascript:;">Separated link</a>
+                </div> -->
             </div>
         </div>
     </div>
-</div>
-<h4 class="mb-0 text-uppercase text-center">Data Personal Specific User Isolasi Mandiri</h4>
-<hr />
-<!--end breadcrumb-->
+    <hr />
+    <h4 class="mb-0  text-center">Data Karantina User : {{$cred->nim_nip}}</h4>
+    <hr />
+    <!--end breadcrumb-->
 
-<!--end breadcrumb-->
+    <!--end breadcrumb-->
 
-<div class="main-body">
-    <div class="row">
-        <div class="col mx-auto">
-            <br>
-            <br>
-            <div class="card">
+    <div class="row row-cols-1 row-cols-xl-2">
+        <div class="col d-flex">
+
+            <div class="card radius-10 w-100">
                 <div class="card-body">
-                    <div class="text-center"><i class="bx bxs-user-circle text-primary font-50"></i>
-                        @if(($specific ?? '' != null))
-                        <h4 class="form-label ">Suspect : {{$specific->nama_lengkap}}</h4>
-                        @else
-                        <h4 class="form-label ">Suspect : belum ada data user</h4>
-                        @endif
-                        <!-- <p>Silahkan Isi Data ID dan Password Anda<a href="authentication-signup.html"></a> -->
+                    <div class="text-center">
+                        <i class="bx bx-handicap text-dark font-50"></i>
+                        <h4 class="form-label ">Status Perawatan Saat ini </h4>
                     </div>
                     <div class="login-separater text-center mb-4">
                         <hr />
                     </div>
-                    @if(($specific ?? '' != null))
+                    <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+                        <div class="font 50">
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0 p-0">
+                                    <li class="breadcrumb-item active" aria-current="page">
+                                        <div class="btn btn-light ">Status Perawatan Saat ini : </div>
+                                    </li>
+                                </ol>
+                            </nav>
+                        </div>&nbsp;&nbsp;
+                        <!-- <button class="btn btn-outline-danger">
+                                Data anda belum diverifikasi oleh operator / admin
+                            </button> -->
+                        @if($status_karantina == 1)
+                        <div class="btn btn-outline-primary "> Sedang Isolasi Mandiri </div>
+
+                        @elseif($status_karantina > 2)
+                        <div class="btn btn-outline-primary "> Sedang Isolasi Di Rumah Sehat UNS !!</div>
+
+                        @elseif($status_karantina == 2)
+                        <div class="btn btn-outline-primary "> Sedang Isolasi Di RS Lainnya </div>
+
+                        @else
+                        <div class="btn btn-success "> Sedang Tidak Menjalani Perawatan Covid Dimanapun </div>
+                        @endif
+
+                    </div>
+
+
+                    @if($status_karantina == 1)
                     <div class="mb-3">
-                        <label class="form-label">Nama Lengkap :</label>
-                        <input type="text" class="form-control" value="{{$specific->nama_lengkap}}" name="nama_lengkap"
-                            id="nama_lengkap" readonly>
+                        <label class="form-label" id="isomansendirilabel">Tinggal Sendirian ? :</label>
+                        <input class="form-control" list="datalistOptions" id="isomansendiri" placeholder="ya"
+                            name="sendirian?">
+                        <datalist id="datalistOptions">
+                            <option value="Ya, Saya tinggal sendirian">
+                            <option value="Tidak, Ada teman/orang lain yang tinggal di tempat yang sama">
+                            <option value="Lainnya">
+                        </datalist>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">NIM / NIP :</label>
-                        <input type="text" class="form-control" value="{{$specific->nim_nip}}" name="nim_nip"
-                            id="nim_nip" readonly>
+                        <label class="form-label" id="isomanalamatlabel">Alamat lengkap
+                            Kos/Asrama/Rumah sewa, disekitar UNS <br>(contoh, kos xx, jalan xx, gang xx, RT/RW,
+                            kelurahan,
+                            kecamatan, Surakarta) :</label>
+                        <textarea type="form-control" class="form-control" placeholder="" name="alamat"
+                            id="isomanalamat"></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Alasan Isolasi :</label>
-                        <input type="text" class="form-control" value="{{$specific->alasan}}" name="nim_nip"
-                            id="nim_nip" readonly>
+                        <label class="form-label" id="isomanurllabel">URL tempat tinggal saat ini
+                            (koordinat G-Map) :</label>
+                        <textarea type="form-control" class="form-control" placeholder="" name="url"
+                            id="isomanurl"></textarea>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-grid">
+                            <a href="" class="btn btn-outline-success btn-lg px-5"><i class="bx bxs-edit"></i>
+                                Update Data</a>
+                        </div>
+                    </div>
+                    @elseif($status_karantina > 2)
+                    <div class="mb-3">
+                        <label class="form-label" id="rslabel">Rumah Sehat UNS :</label>
+                        <select disabled class="form-select form-select-sm mb-3" name="rumahsehat" id="rs"
+                            placeholder="pilih salah 1" value="">
+                            <option value="RS1">Rumah Sehat UNS 1 (RS UNS)</option>
+                            <option value="RS2">Rumah Sehat UNS 2 (Asrama Mahasiswa)</option>
+                        </select>
+                    </div>
+                    @elseif($status_karantina == 2)
+                    <div class="mb-3">
+                        <label class="form-label" id="rslainnamalabel">Nama Tempat Perawatan :</label>
+                        <input type="form-control" class="form-control" placeholder="" name="nama_tempat"
+                            id="rslainnama" value=""></input>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Alamat Tempat Tinggal Sekarang :</label>
-                        <input type="text" class="form-control" value="{{$specific->alamat}}" name="nim_nip"
-                            id="nim_nip" readonly>
+                        <label class="form-label" id="rslainalamatlabel">Alamat lengkap Tempat
+                            Perawatan :</label>
+                        <input type="form-control" class="form-control" placeholder="" name="alamat_tempat"
+                            id="rslainalamat" value=""></input>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Url G-Maps Alamat Tempat Tinggal Sekarang :</label>
-                        <input type="text" class="form-control" value="{{$specific->url_map}}" name="nim_nip"
-                            id="nim_nip" readonly>
+                        <label class="form-label" id="rslainurllabel">URL tempat tinggal saat ini
+                            (koordinat G-Map) :</label>
+                        <textarea type="form-control" class="form-control" placeholder="" name="url_tempat"
+                            id="rslainurl" value=""></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Butuh Kiriman Bantuan :</label>
-                        <input type="text" class="form-control" value="{{$specific->butuh_bantuan}}" name="nim_nip"
-                            id="nim_nip" readonly>
+                    <div class="col-12">
+                        <div class="d-grid">
+                            <a href="" class="btn btn-outline-success btn-lg px-5"><i class="bx bxs-edit"></i>
+                                Update Data</a>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label class="form-label">Sudah Dikirim Bantuan ? (Dari UNS) :</label>
-                        <input type="text" class="form-control" value="{{$specific->kiriman_bantuan}}" name="nim_nip"
-                            id="nim_nip" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tanggal Lapor Sedang Isolasi Mandiri (Ke Aplikasi UNS Care) :</label>
-                        <input type="text" class="form-control" value="{{$specific->created_at}}" name="nim_nip"
-                            id="nim_nip" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Sudah Selesai Isolasi ? :</label>
-                        <input type="text" class="form-control" value="{{$specific->selesai }}" name="nim_nip"
-                            id="nim_nip" readonly>
-                    </div>
-                    @if(($specific->updated_at ?? '') != $specific->created_at)
-                    <div class="mb-3">
-                        <label class="form-label">Tanggal Lapor Selesai Isolasi :</label>
-                        <input type="text" class="form-control" value="{{$specific->updated_at}}" name="nim_nip"
-                            id="nim_nip" readonly>
-                    </div>
-                    @endif
-                    <br>
                     @else
-                     <div class="mb-3">
-                        <label class="form-label">Nama Lengkap :</label>
-                        <input type="text" class="form-control" value="" name="nama_lengkap" id="nama_lengkap" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">NIM / NIP :</label>
-                        <input type="text" class="form-control" value="{{$check->nim_nip}}" name="nim_nip" id="nim_nip"
-                            readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Keterangan :</label>
-                        <input type="text" class="form-control" value="{{$check->keterangan}}" name="nim_nip"
-                            id="nim_nip" readonly>
-                    </div>
-                    <!-- <div class="mb-3">
-							<label class="form-label">Tanggal Lapor Terkena Covid (Ke Aplikasi UNS Care) :</label>
-							<input type="text" class="form-control" value="" name="nim_nip"
-								id="nim_nip" readonly>
-						</div> -->
-                    <!-- <div class="mb-3">
-							<label class="form-label">Gambar Hasil Test Covid :</label><br>
-							<img src="" alt=""
-								style="width:350px;height:300px;">
-						</div> -->
-                    <div class="mb-3">
-                        <label class="form-label">Sekarang Sudah Selesai ? :</label>
-                        <input type="text" class="form-control" value="{{$check->selesai}}" name="nim_nip" id="nim_nip"
-                            readonly>
-                    </div>
                     @endif
 
                 </div>
             </div>
+
+
         </div>
     </div>
+
+
+
 </div>
-
-
-
-
 @endsection

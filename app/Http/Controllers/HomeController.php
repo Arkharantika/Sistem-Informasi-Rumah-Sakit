@@ -15,6 +15,9 @@ use App\Models\ClaimIsolasi;
 use App\Models\ClaimIsolasiTerpusat;
 use App\Models\ClaimIsolasiRSLainnya;
 
+
+use App\Models\Info;
+
 // use App\Http\Controllers\Artisan;
 
 class HomeController extends Controller
@@ -68,26 +71,41 @@ class HomeController extends Controller
     }
     public function dataoverall()
     {
-        // return 15;
         $user = Auth::user();
         $Role = Auth::user()->role;
         $Check = UserData::where('id_user',Auth::user()->id)->first();
         $complete = UserData::where('id_user',$user->id)->get()->first();
 
         $dataCovid = UserData::join('claim_covid','claim_covid.id_user','=','user_data.id_user')->get();
-        $totalCovid = ClaimCovid::where('sembuh','belum')->count();
-        $sembuhCovid = UserData::join('claim_covid','claim_covid.id_user','=','user_data.id_user')->where('claim_covid.sembuh','sudah')->count();
+        $totalCovid = ClaimCovid::where('sembuh','belum')->where('status_verified',1)->count();
+        $sembuhCovid = UserData::join('claim_covid','claim_covid.id_user','=','user_data.id_user')->where('claim_covid.sembuh','sudah')
+        ->where('claim_covid.status_verified',1)->count();
         $pernahCovid = ClaimCovidHistory::all()->count();
 
-        $totalMandiri = ClaimIsolasi::where('selesai','belum')->count();
-        $totalTerpusat = ClaimIsolasiTerpusat::where('selesai','belum')->count();
-        $totalLainnya = ClaimIsolasiRSLainnya::where('selesai','belum')->count();
+        $totalMandiri = ClaimIsolasi::where('selesai','belum')->where('status_verified',1)->count();
+        $totalTerpusat = ClaimIsolasiTerpusat::where('selesai','belum')->where('status_verified',1)->count();
+        $totalLainnya = ClaimIsolasiRSLainnya::where('selesai','belum')->where('status_verified',1)->count();
 
         $dataVaksin = UserData::join('claim_vaksin','claim_vaksin.id_user','=','user_data.id_user')->get();
 
         return view('statistikoverall', compact(
             'totalMandiri','totalTerpusat','totalLainnya',
             'complete','user','dataCovid','totalCovid','sembuhCovid','pernahCovid'));
+    }
+
+    public function dataloop(){
+        $y = ClaimIsolasiTerpusat::all();
+        return $y;
+    }
+
+    public function informasi(){
+        $user = Auth::user();
+        $complete = UserData::where('id_user',$user->id)->get()->first();
+
+        $info = Info::where('id',1)->get()->first();
+        $informasi = $info->text;
+
+        return view('informasi',compact('informasi','complete','user')); 
     }
 
     /**
@@ -110,6 +128,17 @@ class HomeController extends Controller
     {
         //
     }
+     
+    public function editinfo(Request $request)
+    {
+        Info::where('id',1)->update(
+                [
+                        'text'=>$request->isitext,
+                    ]
+                );
+        return back()->with('message','Data berhasil diubah !');
+
+    }
 
     /**
      * Display the specified resource.
@@ -121,6 +150,7 @@ class HomeController extends Controller
     {
         //
     }
+    
 
     /**
      * Show the form for editing the specified resource.

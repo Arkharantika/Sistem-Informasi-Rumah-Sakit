@@ -99,6 +99,11 @@ class AdministrationController extends Controller
         //
     }
 
+    public function askbantuan()
+    {
+        return 0;
+    }
+
     /**
      * Show the form for editing the specified resource.
      *

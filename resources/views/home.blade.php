@@ -26,7 +26,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <div class="btn btn-light ">Status saat ini </div>
+                        <div class="btn btn-outline-dark">Status saat ini </div>
                     </li>
                 </ol>
             </nav>
@@ -55,21 +55,23 @@
 
         <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-outline-primary btn-lg active">
-                @if((Auth::user()->role ?? '') == 'admin'
-                || (Auth::user()->role ?? '') == 'operator')    
-                <span
-                        class="alert-count">{{$total_notification}}</span>
-                        @endif
+                <button type="button" class="btn btn-outline-secondary btn-lg ">
+                    @if((Auth::user()->role ?? '') == 'admin'
+                    || (Auth::user()->role ?? '') == 'operator')                    
+                    @if($total_notification > 0)
+                    <span class="alert-count">
+                    {{$total_notification}}</span>
+                    @endif    
+                    @endif
                     <i class='bx bxs-bell '></i> Notifications</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                <button type="button" class="btn btn-secondary split-bg-secondary dropdown-toggle dropdown-toggle-split"
                     data-bs-toggle="dropdown">
                     <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
                 @if((Auth::user()->role ?? '') == 'admin'
                 || (Auth::user()->role ?? '') == 'operator')
                 <div class="nav-item dropdown dropdown-large dropdown-menu dropdown-menu-end">
-                    <a class="dropdown-item" href="javascript:;">
+                    <a class="dropdown-item" href="{{url('/admin/datapositifcovid')}}">
                         <div class="d-flex align-items-center">
                             <div class="notify bg-light-primary text-primary"><i class="bx bxs-virus"></i>
                             </div>
@@ -82,7 +84,7 @@
                             </div>
                         </div>
                     </a>
-                    <a class="dropdown-item" href="javascript:;">
+                    <a class="dropdown-item" href="{{url('/admin/datavaksin')}}">
                         <div class="d-flex align-items-center">
                             <div class="notify bg-light-danger text-danger"><i class="bx bxs-capsule"></i>
                             </div>

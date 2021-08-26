@@ -48,7 +48,7 @@
                 </div>
                 <div>
                     <br>
-                    <a href="/home">
+                    <a href="{{url('/home')}}">
                         <h4 class="logo-text">UNS CARE</h4>
                     </a>
                     <br>
@@ -107,7 +107,7 @@
                         <li> <a href="{{url('/user/isolasimandiri')}}"><i class="bx bx-right-arrow-alt"></i>Info
                                 Perawatan Covid</a>
                         </li>
-                        <li> <a href="#"><i class="bx bx-right-arrow-alt"></i>Bantuan Terdampak Covid</a>
+                        <li> <a href="{{url('/user/askbantuan')}}"><i class="bx bx-right-arrow-alt"></i>Bantuan Terdampak Covid</a>
                         </li>
                     </ul>
                 </li>
@@ -142,6 +142,15 @@
                         @endif
                     </ul>
                 </li>
+                @if((Auth::user()->role == 'admin') || (Auth::user()->role == 'operator'))
+                <li>
+                    <a href="{{url('/databantuan')}}" class="">
+                        <div class="parent-icon"><i class='bx bx-folder'></i>
+                        </div>
+                        <div class="menu-title">Data Bantuan Covid</div>
+                    </a>
+                </li>
+                @endif
                 <li>
                     <a href="{{url('/chatify')}}" class="">
                         <div class="parent-icon"><i class='bx bxs-chat'></i>
@@ -150,7 +159,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="">
+                    <a href="{{url('/informasi')}}" class="">
                         <div class="parent-icon"><i class='bx bxs-info-square'></i>
                         </div>
                         <div class="menu-title">Informasi Dan Kontak Penting</div>
@@ -195,7 +204,7 @@
                     <div class="user-box dropdown">
                         <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#"
                             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bx bxs-user-circle text-dark font-50"></i>
+                            <i class="bx bxs-user-circle text-secondary font-50"></i>
                             <div class="user-info ps-3">
                                 <p class="user-name mb-0">@yield('data')</p>
                                 <p class="designattion mb-0">@yield('status')</p>

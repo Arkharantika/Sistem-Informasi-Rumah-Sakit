@@ -23,7 +23,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <div class="btn btn-light ">Status saat ini </div>
+                        <div class="btn btn-outline-dark">Status saat ini </div>
                     </li>
                 </ol>
             </nav>
@@ -52,17 +52,18 @@
 
         <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                    data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+                <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
+                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown">
+                    <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"><a class="dropdown-item"
-                        href="javascript:;">Action</a>
+                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                    <a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
+                </div> -->
             </div>
         </div>
         <!--end breadcrumb-->
@@ -87,7 +88,7 @@
             <div class="col-xl-8 d-flex">
                 <div class="card radius-10 w-100">
                     <div class="card-body">
-                        <form method="post" action="/userdata/{{$user->id}}" enctype="multipart/form-data">
+                        <form method="post" action="userdata/{{$user->id}}" enctype="multipart/form-data">
                             @method('PATCH')
                             @csrf
                             <div class="row mb-3">

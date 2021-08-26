@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\ClaimCovid;
 use App\Imports\CovidImport;
+use App\Imports\UserImport;
 use App\Http\Controllers\Controller;
 use Session;
 
@@ -27,27 +28,32 @@ class ImportController extends Controller
 		// menangkap file excel
 		$file = $request->file('file');
  
-		// membuat nama file unik
-		$nama_file = rand().$file->getClientOriginalName();
- 
-		// upload ke folder file_covid di dalam folder public
-		$file->move('file_covid',$nama_file);
- 
 		// import data
-		Excel::import(new CovidImport, public_path('/file_covid/'.$nama_file));
+		Excel::import(new CovidImport, $file);
 
-		// $duplicates = DB::table('claim_covid_history')
-		// 	->select('nim_nip', DB::raw('COUNT(*) as `count`'))
-		// 	->groupBy('nim_nip')
-		// 	->havingRaw('COUNT(*) > 1')
-		// 	->get();
-		
-		// 	return $duplicates;
- 
 		// notifikasi dengan session
 		Session::flash('sukses','Data Covid Berhasil Diimport!');
  
 		// alihkan halaman kembali
 		return redirect('admin/datapositifcovid');
+	}
+	public function import_user(Request $request) 
+	{
+		// validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+ 
+		// menangkap file excel
+		$file = $request->file('file');
+ 
+		// import data
+		Excel::import(new UserImport, $file);
+
+		// notifikasi dengan session
+		Session::flash('sukses','Data Covid Berhasil Diimport!');
+ 
+		// alihkan halaman kembali
+		return redirect('admin/useradministration');
 	}
 }

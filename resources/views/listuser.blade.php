@@ -19,28 +19,30 @@
 
     <!--breadcrumb-->
     <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-        <div class="breadcrumb-title pe-3">Tables</div>
+        <div class="breadcrumb-title pe-3">Tabel</div>
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-list-ul"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Data Table</li>
+                    <li class="breadcrumb-item active" aria-current="page">List Data User</li>
                 </ol>
             </nav>
         </div>
-        <div class="ms-auto">
+       <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                    data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+                <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
+                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown">
+                    <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"> <a class="dropdown-item"
-                        href="javascript:;">Action</a>
+                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                    <a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div> <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="javascript:;">Separated link</a>
+                </div> -->
             </div>
         </div>
     </div>
@@ -66,6 +68,22 @@
     <div class="card">
         <div class="card-body">
             <div class="table-responsive">
+                @if((Auth::user()->role ?? '') == 'admin')
+                <table cellspacing="5" cellpadding="5" border="0">
+                    <tbody>
+                        <tr>
+                            <div class="col-sm-9 text-secondary">
+                                <!-- <input type="submit" class="btn btn-success px-4" value="Import Data" /> -->
+                                <button type="button" class="btn btn-success mr-5" data-toggle="modal"
+                                    data-target="#importCovid">
+                                    Import Data
+                                </button>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                @endif
                 <table id="example2" class="table table-striped table-bordered text-center">
                     <thead>
                         <tr>
@@ -98,7 +116,8 @@
                             <td class="text-center">
                                 <a href="datapersonal/{{$row->id}}" class="btn btn-sm btn-warning mr-5 mb-5"><i
                                         class="bx bx-edit-alt"></i></a>
-                                <a href="deletepersonal/{{$row->id}}" class="btn btn-sm btn-danger mr-5 mb-5"><i class="bx bx-eraser"></i></a>
+                                <a href="deletepersonal/{{$row->id}}" class="btn btn-sm btn-danger mr-5 mb-5"><i
+                                        class="bx bx-eraser"></i></a>
                             </td>
                         </tr>
                         @endforeach
@@ -106,6 +125,34 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+    </div>
+
+    <!-- Import Excel -->
+    <div class="modal fade" id="importCovid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" action="{{ route('importUser') }}" enctype="multipart/form-data">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Import Data Covid</h5>
+                    </div>
+                    <div class="modal-body">
+    
+                        {{ csrf_field() }}
+    
+                        <label>Pilih file excel</label>
+                        <div class="form-group">
+                            <input type="file" name="file" required="required">
+                        </div>
+    
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Import</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

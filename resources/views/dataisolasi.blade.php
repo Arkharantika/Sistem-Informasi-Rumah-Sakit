@@ -25,27 +25,27 @@
         <div class="ps-3">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
-                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
+                    <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-list-ul"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Data Table</li>
+                    <li class="breadcrumb-item active" aria-current="page">Data Pasien Karantina</li>
                 </ol>
             </nav>
         </div>
 
         <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
+                <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
+                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
                     data-bs-toggle="dropdown">
                     <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
                     <a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -127,13 +127,12 @@
                         <tr>
                             <th>No</th>
                             <th>NIM / NIP</th>
-                            <th>Alamat</th>
+                            <th>Status Covid</th>
+                            <!-- <th>Alamat</th> -->
                             <th>Url G-Maps</th>
-                            <th>Sudah Diberi Bantuan ? (dari UNS)</th>
+                            <!-- <th>Sudah Diberi Bantuan ? (dari UNS)</th> -->
                             <th>Sudah Selesai ?</th>
-                            <th>Tanggal Lapor</th>
-                            <!-- <th>Action</th> -->
-                            <!-- <th>Updated at</th> -->
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -142,16 +141,23 @@
                         <tr>
                             <td>{{$no++}}</td>
                             <td>{{$row->nim_nip}}</td>
-                            <td>{{$row->alamat}}</td>
-                            <td>{{$row->url}}</td>
-                            <td>{{$row->kiriman_bantuan}}</td>
+                            <td>
+                                @if($row->status_verified == 0)
+                                <span class="text-danger">Belum Diverifikasi</span>
+                                @elseif($row->status_verified == 1)
+                                <span class="text-primary">Sudah Terverifikasi</span>
+                                @endif
+                            </td>
+                            <!-- <td>{{$row->alamat}}</td> -->
+                            <td>{{$row->url_map}}</td>
+                            <!-- <td>{{$row->kiriman_bantuan}}</td> -->
                             <td>{{$row->selesai}}</td>
                             <!-- <td>{{$row->butuh_bantuan}}</td> -->
-                            <td>{{$row->created_at}}</td>
-                            <!-- <td>
-                                <a href="{{url('/datapersonalisolasi/'.$row->id)}}" class="btn btn-sm btn-success "><i
-                                        class="lni lni-eye"></i></a>
-                            </td> -->
+                            <!-- <td>{{$row->created_at}}</td> -->
+                            <td>
+                                <a href="{{url('/datapersonalisolasi/'.$row->id)}}" class="btn btn-sm btn-warning "><i
+                                        class="bx bxs-edit"></i></a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -169,11 +175,11 @@
                         <tr>
                             <th>No</th>
                             <th>NIM / NIP</th>
+                            <th>Status Covid</th>
                             <th>Dirawat Di ?</th>
-                            <!-- <th>Butuh Bantuan ?</th> -->
                             <th>Sudah Selesai ?</th>
-                            <th>Tanggal Lapor</th>
-                            <!-- <th>Action</th> -->
+                            <!-- <th>Tanggal Lapor</th> -->
+                            <th>Action</th>
                             <!-- <th>Updated at</th> -->
                         </tr>
                     </thead>
@@ -183,14 +189,20 @@
                         <tr>
                             <td>{{$no++}}</td>
                             <td>{{$row->nim_nip}}</td>
+                            <td>
+                                @if($row->status_verified == 0)
+                                <span class="text-danger">Belum Diverifikasi</span>
+                                @elseif($row->status_verified == 1)
+                                <span class="text-primary">Sudah Terverifikasi</span>
+                                @endif
+                            </td>
                             <td>{{$row->rumah_sehat}}</td>
-                            <!-- <td>{{$row->butuh_bantuan}}</td> -->
                             <td>{{$row->selesai}}</td>
-                            <td>{{$row->created_at}}</td>
-                            <!-- <td>
-                                <a href="{{url('/datapersonalcovid/'.$row->id)}}" class="btn btn-sm btn-primary "><i
-                                        class="lni lni-eye"></i></a>
-                            </td> -->
+                            <!-- <td>{{$row->created_at}}</td> -->
+                            <td>
+                                <a href="{{url('/datapersonalisolasiterpusat/'.$row->id)}}" class="btn btn-sm btn-warning "><i
+                                        class="bx bxs-edit"></i></a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -208,12 +220,13 @@
                         <tr>
                             <th>No</th>
                             <th>NIM / NIP</th>
+                            <th>Status Covid</th>
                             <th>Nama Tempat</th>
                             <th>Alamat Tempat</th>
                             <th>Url-GMaps</th>
-                            <th>Tanggal Lapor</th>
+                            <!-- <th>Tanggal Lapor</th> -->
                             <th>Sudah Selesai ?</th>
-                            <!-- <th>Action</th> -->
+                            <th>Action</th>
                             <!-- <th>Updated at</th> -->
                         </tr>
                     </thead>
@@ -223,15 +236,22 @@
                         <tr>
                             <td>{{$no++}}</td>
                             <td>{{$row->nim_nip}}</td>
+                            <td>
+                                @if($row->status_verified == 0)
+                                <span class="text-danger">Belum Diverifikasi</span>
+                                @elseif($row->status_verified == 1)
+                                <span class="text-primary">Sudah Terverifikasi</span>
+                                @endif
+                            </td>
                             <td>{{$row->nama_tempat}}</td>
                             <td>{{$row->alamat_tempat}}</td>
                             <td>{{$row->url_tempat}}</td>
-                            <td>{{$row->created_at}}</td>
+                            <!-- <td>{{$row->created_at}}</td> -->
                             <td>{{$row->selesai}}</td>
-                            <!-- <td>
-                                <a href="{{url('/datapersonalcovid/'.$row->id)}}" class="btn btn-sm btn-primary "><i
-                                        class="lni lni-eye"></i></a>
-                            </td> -->
+                            <td>
+                                <a href="{{url('/datapersonalisolasirslainnya/'.$row->id)}}" class="btn btn-sm btn-warning "><i
+                                        class="bx bxs-edit"></i></a>
+                            </td>
                         </tr>
                         @endforeach
                     </tbody>

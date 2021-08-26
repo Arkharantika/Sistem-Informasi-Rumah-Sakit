@@ -40,10 +40,8 @@ class ClaimController extends Controller
         $vaksin = ClaimVaksin::where('id_user',$user->id)->get()->last();
         
         $history = ClaimCovid::where('id_user',$user->id)->get();
-        // $history = ClaimCovid::Mhsaktif($user->id);
-
-        // return $history;
         $notification_isoman = ClaimCovid::where('status_verified',0)->count();
+
 
         return view('claim',compact('user','complete','data','vaksin','history','notification_isoman'));
     }
@@ -105,8 +103,6 @@ class ClaimController extends Controller
             $hasilpcr->move($hasil_upload,$nama_pcr);
         }   
 
-
-
         if($pilih == 'milih_covid'){
             $variable_kosong = 1;
             if($request->keterangan==null || $request->alamat==null || $request->url==null){
@@ -121,12 +117,13 @@ class ClaimController extends Controller
                     'tanggal_confirmed'=> $request->tanggal_confirmed,
                     'sembuh'           => 'belum',
                     'pilihan_isolasi'  => $variable_kosong
-                    ,'nim_nip'         => $complete->nim_nip
+                    ,'nim_nip'         => strtoupper($complete->nim_nip)
                 ]);
-
+                    
                 ClaimIsolasi::create( 
                 [
                 'id_covid'          => $x->id,
+                'nim_nip'         => strtoupper($complete->nim_nip),
                 'alasan'            => $request->sendirian, 
                 'alamat'            => $request->alamat,
                 'url_map'           => $request->url,
@@ -138,9 +135,9 @@ class ClaimController extends Controller
 
         if($pilih == 'milih_rumahsehat'){
             if($request->rumahsehat=='RS1'){
-                $variable_kosong = 2;
-            }elseif($request->rumahsehat=='RS2'){
                 $variable_kosong = 3;
+            }elseif($request->rumahsehat=='RS2'){
+                $variable_kosong = 4;
             }
             if($request->rumahsehat==null){
                 return redirect('user/claimcovid')->with('warning','Maaf, tolong data di isi lengkap !');
@@ -153,22 +150,23 @@ class ClaimController extends Controller
                     'tanggal_confirmed'=> $request->tanggal_confirmed,
                     'sembuh'           => 'belum',
                     'pilihan_isolasi'  => $variable_kosong
-                    ,'nim_nip'         => $complete->nim_nip
+                    ,'nim_nip'         => strtoupper($complete->nim_nip)
 
                 ]);
 
                 ClaimIsolasiTerpusat::create( 
                 [
                     'id_covid'          => $x->id,
-                'rumah_sehat'       => $request->rumahsehat,
-                'selesai'           => 'belum'
+                    'nim_nip'         => strtoupper($complete->nim_nip),
+                    'rumah_sehat'       => $request->rumahsehat,
+                    'selesai'           => 'belum'
            ]);    
             }
             
         }
         
         if($pilih == 'milih_rslain'){
-            $variable_kosong = 4;
+            $variable_kosong = 2;
             if($request->nama_tempat==null || $request->alamat_tempat==null || $request->url_tempat==null){
                 return redirect('user/claimcovid')->with('warning','Maaf, tolong data di isi lengkap !');
             }else{
@@ -180,13 +178,14 @@ class ClaimController extends Controller
                     'tanggal_confirmed'=> $request->tanggal_confirmed,
                     'sembuh'           => 'belum',
                     'pilihan_isolasi'  => $variable_kosong
-                    ,'nim_nip'         => $complete->nim_nip
+                    ,'nim_nip'         => strtoupper($complete->nim_nip)
 
                 ]);
 
                 ClaimIsolasiRSLainnya::create( 
                 [
                     'id_covid'          => $x->id,
+                    'nim_nip'         => strtoupper($complete->nim_nip),
                 'nama_tempat'       => $request->nama_tempat,
                 'alamat_tempat'     => $request->alamat_tempat,
                 'url_tempat'        => $request->url_tempat,
@@ -198,7 +197,7 @@ class ClaimController extends Controller
         // return $x->id;
         
         
-        return redirect('user/claimcovid')->with('message','Anda saat ini terinfeksi Covid-19, Segera lakukan isolasi mandiri atau Hubungi pihak yang berwenang !');
+        return redirect('user/claimcovid')->with('message','Terimakasih Sudah Melapor, Data Anda Akan Diverifikasi Operator !');
     }
 
     /**

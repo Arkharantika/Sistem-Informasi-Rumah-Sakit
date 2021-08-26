@@ -101,6 +101,8 @@ Route::post('/user/isolasimandiri', [IsolasiController::class, 'store'])->name('
 Route::patch('/user/isolasimandiri/{id}', [IsolasiController::class, 'update'])->name('update');
 
 
+// -> Untuk Bantuan Covid
+Route::get('/user/askbantuan', [AdministrationController::class, 'askbantuan'])->name('askbantuan');
 
 // +---------------------------------------------------------------------------------------+ //
 //                                   <<< Admin Role >>>
@@ -117,6 +119,7 @@ Route::get('/admin/updaterole/{id}', [AdministrationController::class, 'updatero
 Route::get('/admin/datapositifcovid', [DataCovidController::class, 'index']);
 Route::get('/admin/downloadcovid/{id}', [DataCovidController::class, 'downloadcovid'])->name('downloadcovid');
 Route::get('/admin/downloadswabpcr/{id}', [DataCovidController::class, 'downloadswabpcr'])->name('downloadswabpcr');
+Route::post('/admin/updatecovid/{id}', [DataCovidController::class, 'updatecovid'])->name('updatecovid');
 
 // -> Untuk Data Vaksin
 Route::get('/admin/datavaksin', [DataVaksinController::class, 'index']);
@@ -141,6 +144,8 @@ Route::get('/datapersonalvaksin/{id}', [DataPersonalController::class, 'showVaks
 
 Route::get('/datapersonalgejala/{id}', [DataPersonalController::class, 'showGejala'])->name('showGejala');
 Route::get('/datapersonalisolasi/{id}', [DataPersonalController::class, 'showIsolasi'])->name('showIsolasi');
+Route::get('/datapersonalisolasiterpusat/{id}', [DataPersonalController::class, 'showIsolasiTerpusat'])->name('showIsolasiTerpusat');
+Route::get('/datapersonalisolasirslainnya/{id}', [DataPersonalController::class, 'showIsolasiRSLainnya'])->name('showIsolasiRSLainnya');
 
 Route::get('/verifikasicovid/{id}', [DataPersonalController::class, 'verifikasiCovid'])->name('verifikasiCovid');
 Route::get('/verifikasivaksin/{id}', [DataPersonalController::class, 'verifikasiVaksin'])->name('verifikasiVaksin');
@@ -153,15 +158,20 @@ Route::get('/deletecovid/{id}', [DataPersonalController::class, 'deleteCovid'])-
 //                                   <<< All Role Routes >>>
 // +---------------------------------------------------------------------------------------+ //
 
+
 // -> Untuk Profile
+Route::get('/informasi', [HomeController::class, 'informasi'])->name('informasi');
+Route::post('/editinformasi', [HomeController::class, 'editinfo'])->name('editinfo');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
 Route::get('/datacovidoverall', [HomeController::class, 'dataoverall'])->name('dataoverall');
 
 // -> Emergency / Experiment Routes
 Route::get('/chart', [HomeController::class, 'chart'])->name('chart');
+Route::get('/dataloop', [HomeController::class, 'dataloop'])->name('dataloop');
 
 // -> Import Data from Excel
 Route::post('/datapositifcovid/import_excel',[ImportController::class,'import_excel'])->name('importCovid');
+Route::post('/datauser/import_excel',[ImportController::class,'import_user'])->name('importUser');
 
 // -> Fallback System
 Route::get('fallback',function(){

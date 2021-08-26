@@ -93,7 +93,7 @@ class UserDataController extends Controller
         UserData::updateOrCreate(
             ['id_user' => $id],
             ['nama_lengkap' => $request->nama_lengkap, 
-             'nim_nip'    => $request->nim_nip,
+             'nim_nip'    => strtoupper($request->nim_nip),
              'no_telp'    => $request->no_telp,
              'status'     => $request->option,
              'gambar_ktp' => $nama_ktp,
@@ -101,7 +101,7 @@ class UserDataController extends Controller
              'verified'   => 'no']
         );
 
-        return redirect()->route('home');
+        return redirect()->route('profile')->with('message','Profil Berhasil Di Perbarui !');;
     }
 
     /**

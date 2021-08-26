@@ -38,9 +38,9 @@ class DataIsolasiController extends Controller
         $dataTerpusat = ClaimIsolasiTerpusat::all();
         $dataLainnya = ClaimIsolasiRSLainnya::all();
 
-        $totalMandiri = ClaimIsolasi::where('selesai','belum')->count();
-        $totalTerpusat = ClaimIsolasiTerpusat::where('selesai','belum')->count();
-        $totalLainnya = ClaimIsolasiRSLainnya::where('selesai','belum')->count();
+        $totalMandiri = ClaimIsolasi::where('selesai','belum')->where('status_verified',1)->count();
+        $totalTerpusat = ClaimIsolasiTerpusat::where('selesai','belum')->where('status_verified',1)->count();
+        $totalLainnya = ClaimIsolasiRSLainnya::where('selesai','belum')->where('status_verified',1)->count();
 
         // return $data;
         return view('dataisolasi',compact('dataTerpusat','user','complete','data',

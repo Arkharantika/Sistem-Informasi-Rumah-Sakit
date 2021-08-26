@@ -60,18 +60,21 @@ class ClaimVaksinController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
+        $lengkap = UserData::where('id_user',$user->id)->get()->first();
         $complete = ClaimCovid::where('id_user',$user->id)->get()->first();
         $check = ClaimVaksin::where('id_user',$user->id)->get()->last();
 
         if($check == null){
             ClaimVaksin::Create([
                 'id_user'       => $user->id,
+                'nim_nip'       => $lengkap->nim_nip,
                 'dosis_ke'      => $request->dosis,
                 'keterangan'    => $request->keterangan,
                 'link'          => $request->link
             ]);
             ClaimVaksinHistory::Create([
                 'id_user'       => $user->id,
+                'nim_nip'       => $lengkap->nim_nip,
                 'dosis'         => $request->dosis
             ]);
             return redirect('user/claimvaksin')->with('message','Data Sudah Di Update, Terimakasih telah melapor !!');
@@ -84,6 +87,7 @@ class ClaimVaksinController extends Controller
         if($check->dosis_ke != $request->dosis){
             ClaimVaksin::Create([
                 'id_user'       => $user->id,
+                'nim_nip'       => $lengkap->nim_nip,
                 'dosis_ke'      => $request->dosis,
                 'keterangan'    => $request->keterangan,
                 'link'          => $request->link

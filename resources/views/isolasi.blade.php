@@ -24,7 +24,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <div class="btn btn-light ">Status saat ini </div>
+                        <div class="btn btn-outline-dark">Status saat ini </div>
                     </li>
                 </ol>
             </nav>
@@ -51,18 +51,20 @@
 
         &nbsp;&nbsp;
 
-        <div class="ms-auto">
+       <div class="ms-auto">
             <div class="btn-group">
-                <button type="button" class="btn btn-primary">Settings</button>
-                <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split"
-                    data-bs-toggle="dropdown"> <span class="visually-hidden">Toggle Dropdown</span>
+                <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
+                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
+                    data-bs-toggle="dropdown">
+                    <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end"><a class="dropdown-item"
-                        href="javascript:;">Action</a>
+                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                    <a class="dropdown-item" href="javascript:;">Action</a>
                     <a class="dropdown-item" href="javascript:;">Another action</a>
                     <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div><a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="javascript:;">Separated link</a>
+                </div> -->
             </div>
         </div>
     </div>
@@ -79,7 +81,7 @@
     </div>
     @endif
 
-    <h6 class="mb-0 text-uppercase">DataTable Example</h6>
+    <!-- <h6 class="mb-0 text-uppercase">informasi perawatan karantina covid-19</h6> -->
     <hr />
     <!--end breadcrumb-->
 
@@ -105,20 +107,28 @@
                                 </ol>
                             </nav>
                         </div>&nbsp;&nbsp;
-                        @if(($isolasi->selesai ?? '') == 'belum' && ($isolasi->status_change ?? '') == 0)
+                        @if($status_verifikasi == 0)
+                        
+                            <button class="btn btn-outline-danger">
+                                Data anda belum diverifikasi oleh operator / admin
+                            </button>
+                        
+
+                        @elseif(($isolasi->selesai ?? '') == 'belum' && ($isolasi->status_change ?? '') == 0)
                         <div class="btn btn-info "> Sedang Isolasi Mandiri </div>
 
                         @elseif(($terpusat->selesai ?? '') == 'belum')
                         <div class="btn btn-info "> Sedang Isolasi Di Rumah Sehat UNS !!</div>
-
+                        
                         @elseif(($lainnya->selesai ?? '') == 'belum')
                         <div class="btn btn-info "> Sedang Isolasi Di RS Lainnya </div>
-
+                        
                         @else
                         <div class="btn btn-success "> Sedang Tidak Menjalani Perawatan Covid Dimanapun </div>
                         @endif
                     </div>
-
+                    
+                    @if($status_verifikasi == 1)
                     @if(($isolasi->selesai ?? '') == 'belum' && ($isolasi->status_change ?? '') == 0)
                     <div class="mb-3">
                         <label class="form-label" id="isomansendirilabel">Tinggal Sendirian ? :</label>
@@ -177,7 +187,7 @@
                             name="url_tempat" id="rslainurl" value="{{$lainnya->url_tempat}}" disabled></textarea>
                     </div>
                     @else
-
+                    @endif
                     @endif
 
                 </div>
