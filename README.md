@@ -20,3 +20,6 @@
 -   `php artisan serve `
 
 `Note:` You need to create two or more user accounts to test the messenger features..
+
+
+seteleh selesai mekonfigurasi chatify, konfigurasi sistem informasinya, sesuaikan dengan ENV nya !!
