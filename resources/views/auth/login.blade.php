@@ -7,7 +7,7 @@
         </x-slot>
 
         <div class="text-center">
-            <img src="{{asset('CostumStyle/images/cardiogram.png')}}" alt="">
+            <img src="{{asset('CostumStyle/images/tatonas.png')}}" alt="">
         </div>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />

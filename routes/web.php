@@ -30,6 +30,9 @@ use App\Http\Controllers\DataIsolasiController;
 // Imort Data Covid
 use App\Http\Controllers\ImportController;
 
+// Controller Tatonas
+use App\Http\Controllers\SensorController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -80,30 +83,6 @@ Route::middleware(['auth'])->group(function () {
 // -> Untuk Update Data User
 Route::patch('/userdata/{id}', [UserDataController::class, 'update'])->name('update');
 
-// -> Untuk CLaim Positif Covid 19
-Route::get('/user/claimcovid', [ClaimController::class, 'index']);
-Route::post('/user/claimcovid', [ClaimController::class, 'store'])->name('store');
-Route::patch('/user/claimcovid/{id}', [ClaimController::class, 'update'])->name('update');
-
-// -> Untuk Gejala Covid
-Route::get('/user/gejalacovid', [GejalaController::class, 'index']);
-Route::post('/user/gejalacovid', [GejalaController::class, 'store'])->name('store');
-Route::patch('/user/gejalacovid/{id}', [GejalaController::class, 'update'])->name('update');
-
-// -> Untuk Claim Vaksin
-Route::get('/user/claimvaksin', [ClaimVaksinController::class, 'index']);
-Route::post('/user/claimvaksin', [ClaimVaksinController::class, 'store'])->name('store');
-Route::patch('/user/claimvaksin/{id}', [ClaimVaksinController::class, 'update'])->name('update');
-
-// -> Untuk Isolasi Mandiri
-Route::get('/user/isolasimandiri', [IsolasiController::class, 'index']);
-Route::post('/user/isolasimandiri', [IsolasiController::class, 'store'])->name('store');
-Route::patch('/user/isolasimandiri/{id}', [IsolasiController::class, 'update'])->name('update');
-
-
-// -> Untuk Bantuan Covid
-Route::get('/user/askbantuan', [AdministrationController::class, 'askbantuan'])->name('askbantuan');
-
 // +---------------------------------------------------------------------------------------+ //
 //                                   <<< Admin Role >>>
 // +---------------------------------------------------------------------------------------+ //
@@ -114,23 +93,6 @@ Route::get('/admin/deletepersonal/{id}', [AdministrationController::class, 'dele
 Route::get('/admin/datapersonal/{id}', [DataPersonalController::class, 'show'])->name('show');
 Route::patch('/admin/datapersonal/{id}', [DataPersonalController::class, 'update'])->name('update');
 Route::get('/admin/updaterole/{id}', [AdministrationController::class, 'updaterole'])->name('updatedrole');
-
-// -> Untuk Data Covid
-Route::get('/admin/datapositifcovid', [DataCovidController::class, 'index']);
-Route::get('/admin/downloadcovid/{id}', [DataCovidController::class, 'downloadcovid'])->name('downloadcovid');
-Route::get('/admin/downloadswabpcr/{id}', [DataCovidController::class, 'downloadswabpcr'])->name('downloadswabpcr');
-Route::post('/admin/updatecovid/{id}', [DataCovidController::class, 'updatecovid'])->name('updatecovid');
-
-// -> Untuk Data Vaksin
-Route::get('/admin/datavaksin', [DataVaksinController::class, 'index']);
-
-// -> Untuk Data Gejala Covid
-Route::get('/admin/datagejala', [DataGejalaController::class, 'index']);
-
-// -> Untuk Data Gejala Covid
-Route::get('/admin/dataisolasi', [DataIsolasiController::class, 'index']);
-Route::get('/admin/dataisolasiterpusat', [DataIsolasiController::class, 'isomanTerpusat'])->name('isomanTerpusat');
-
 
 
 // +---------------------------------------------------------------------------------------+ //
@@ -158,12 +120,7 @@ Route::get('/deletecovid/{id}', [DataPersonalController::class, 'deleteCovid'])-
 //                                   <<< All Role Routes >>>
 // +---------------------------------------------------------------------------------------+ //
 
-
-// -> Untuk Profile
-Route::get('/informasi', [HomeController::class, 'informasi'])->name('informasi');
-Route::post('/editinformasi', [HomeController::class, 'editinfo'])->name('editinfo');
 Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
-Route::get('/datacovidoverall', [HomeController::class, 'dataoverall'])->name('dataoverall');
 
 // -> Emergency / Experiment Routes
 Route::get('/chart', [HomeController::class, 'chart'])->name('chart');
@@ -177,3 +134,67 @@ Route::post('/datauser/import_excel',[ImportController::class,'import_user'])->n
 Route::get('fallback',function(){
     Artisan::call('migrate:rollback');
 });
+
+
+// +---------------------------------------------------------------------------------------+ //
+//                                   <<< TATONAS TEST ROUTES >>>
+// +---------------------------------------------------------------------------------------+ //
+
+//  <--- INDEX --->
+Route::get('/findsensor', [HomeController::class, 'indexFindSensor'])->name('indexFindSensor');
+Route::get('/mastersensor', [SensorController::class, 'indexMasterSensor'])->name('indexMasterSensor');
+Route::get('/hardware', [SensorController::class, 'indexHardware'])->name('indexHardware');
+Route::get('/hardwaredetail', [SensorController::class, 'indexHardwareDetail'])->name('indexHardwareDetail');
+Route::get('/transaction', [SensorController::class, 'indexTransaction'])->name('indexTransaction');
+Route::get('/transactiondetail', [SensorController::class, 'indexTransactionDetail'])->name('indexTransactionDetail');
+
+//  <--- DELETES --->
+Route::get('/softdeletemastersensor/{id}', [SensorController::class, 'SoftDeleteMasterSensor'])->name('SoftDeleteMasterSensor');
+Route::get('/deletemastersensor/{id}', [SensorController::class, 'DeleteMasterSensor'])->name('DeleteMasterSensor');
+
+Route::get('/softdeletehardware/{id}', [SensorController::class, 'SoftDeleteHardware'])->name('SoftDeleteHardware');
+Route::get('/deletehardware/{id}', [SensorController::class, 'DeleteHardware'])->name('DeleteHardware');
+
+Route::get('/softdeletehardwaredetail/{id}', [SensorController::class, 'SoftDeleteHardwareDetail'])->name('SoftDeleteHardwareDetail');
+Route::get('/deletehardwaredetail/{id}', [SensorController::class, 'DeleteHardwareDetail'])->name('DeleteHardwareDetail');
+
+Route::get('/softdeletetransaction/{id}', [SensorController::class, 'SoftDeleteTransaction'])->name('SoftDeleteTransaction');
+Route::get('/deletetransaction/{id}', [SensorController::class, 'DeleteTransaction'])->name('DeleteTransaction');
+
+Route::get('/softdeletetransactiondetail/{id}', [SensorController::class, 'SoftDeleteTransactionDetail'])->name('SoftDeleteTransactionDetail');
+Route::get('/deletetransactiondetail/{id}', [SensorController::class, 'DeleteTransactionDetail'])->name('DeleteTransactionDetail');
+
+//  <--- ADD DATA --->
+Route::get('/mastersensor/tambahdata', [SensorController::class, 'FormTambahMasterSensor'])->name('FormTambahMasterSensor');
+Route::post('/mastersensor/createdata', [SensorController::class, 'createMasterSensor'])->name('createMasterSensor');
+
+Route::get('/hardware/tambahdata', [SensorController::class, 'FormTambahHardware'])->name('FormTambahHardware');
+Route::post('/hardware/createdata', [SensorController::class, 'createHardware'])->name('createHardware');
+
+Route::get('/hardwaredetail/tambahdata', [SensorController::class, 'FormTambahHardwareDetail'])->name('FormTambahHardwareDetail');
+Route::post('/hardwaredetail/createdata', [SensorController::class, 'createHardwareDetail'])->name('createHardwareDetail');
+
+Route::get('/transaction/tambahdata', [SensorController::class, 'FormTambahTransaction'])->name('FormTambahTransaction');
+Route::post('/transaction/createdata', [SensorController::class, 'createTransaction'])->name('createTransaction');
+
+Route::get('/transactiondetail/tambahdata', [SensorController::class, 'FormTambahTransactionDetail'])->name('FormTambahTransactionDetail');
+Route::post('/transactiondetail/createdata', [SensorController::class, 'createTransactionDetail'])->name('createTransactionDetail');
+
+//  <--- UPDATE --->
+Route::get('/editmastersensor/{id}', [SensorController::class, 'FormEditMasterSensor'])->name('FormEditMasterSensor');
+Route::patch('/editmastersensor/{id}', [SensorController::class, 'updateMasterSensor'])->name('updateMasterSensor');
+
+Route::get('/edithardware/{id}', [SensorController::class, 'FormEditHardware'])->name('FormEditHardware');
+Route::patch('/edithardware/{id}', [SensorController::class, 'updateHardware'])->name('updateHardware');
+
+Route::get('/edithardwaredetail/{id}', [SensorController::class, 'FormEditHardwareDetail'])->name('FormEditHardwareDetail');
+Route::patch('/edithardwaredetail/{id}', [SensorController::class, 'updateHardwareDetail'])->name('updateHardwareDetail');
+
+Route::get('/edittransaction/{id}', [SensorController::class, 'FormEditTransaction'])->name('FormEditTransaction');
+Route::patch('/edittransaction/{id}', [SensorController::class, 'updateTransaction'])->name('updateTransaction');
+
+Route::get('/edittransactiondetail/{id}', [SensorController::class, 'FormEditTransactionDetail'])->name('FormEditTransactionDetail');
+Route::patch('/edittransactiondetail/{id}', [SensorController::class, 'updateTransactionDetail'])->name('updateTransactionDetail');
+
+//  <--- LOAD DATA ---> 
+Route::post('/loaddata', [HomeController::class, 'LoadData'])->name('LoadData');

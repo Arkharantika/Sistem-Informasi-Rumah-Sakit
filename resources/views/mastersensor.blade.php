@@ -25,7 +25,7 @@
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-list-ul"></i></a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">List Data User</li>
+                    <li class="breadcrumb-item active" aria-current="page">List Data Master Sensor</li>
                 </ol>
             </nav>
         </div>
@@ -54,7 +54,8 @@
     </div>
     @endif
 
-    <p class="mb-0 text-uppercase display-6 text-center">List User Tatonas</p>
+    <hr />
+    <p class="mb-0 text-uppercase display-6 text-center">List Data Master Sensor</p>
     <hr />
 
     <div class="card">
@@ -65,11 +66,10 @@
                     <tbody>
                         <tr>
                             <div class="col-sm-9 text-secondary">
-                                <!-- <input type="submit" class="btn btn-success px-4" value="Import Data" /> -->
-                                <button type="button" class="btn btn-success mr-5" data-toggle="modal"
-                                    data-target="#importCovid">
-                                    Import Data
-                                </button>
+                                <a type="button" class="btn btn-outline-success mr-5"
+                                    href="{{url('/mastersensor/tambahdata')}}">
+                                    <i class='bx bx-plus'></i> Tambah Data
+                                </a>
                             </div>
                         </tr>
                     </tbody>
@@ -80,16 +80,15 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Lengkap</th>
-                            <th>Email</th>
-                            <th>NIM / NIP</th>
-                            <th>No Telp</th>
-                            <th>Alamat</th>
-                            <th>Status</th>
-                            <th>Role</th>
-                            <th>Verivikasi Status</th>
-                            <th style="width:10%">Action</th>
-                            <!-- <th>Updated at</th> -->
+                            <th>Sensor</th>
+                            <th>Sensor Name</th>
+                            <th>Unit</th>
+                            <th>Created By</th>
+                            <th>Created At</th>
+                            @if((Auth::user()->role ?? '') == 'super admin' || (Auth::user()->role ?? '') == 'admin'
+                                )
+                            <th>Action</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -97,20 +96,29 @@
                         @foreach ($data as $row)
                         <tr>
                             <td>{{$no++}}</td>
-                            <td>{{$row->nama_lengkap}}</td>
-                            <td>{{$row->email}}</td>
-                            <td>{{$row->nim_nip}}</td>
-                            <td>{{$row->no_telp}}</td>
-                            <td>{{$row->alamat}}</td>
-                            <td>{{$row->status}}</td>
-                            <td>{{$row->role}}</td>
-                            <td>{{$row->verified}}</td>
+                            <td>{{$row->sensor}}</td>
+                            <td>{{$row->sensor_name}}</td>
+                            <td>{{$row->unit}}</td>
+                            <td>{{$row->created_by}}</td>
+                            <td>{{$row->created_at}}</td>
+                            @if((Auth::user()->role ?? '') == 'super admin' || (Auth::user()->role ?? '') == 'admin'
+                                )
                             <td class="text-center">
-                                <a href="datapersonal/{{$row->id}}" class="btn btn-sm btn-warning mr-5 mb-5"><i
+                                <a href="editmastersensor/{{$row->id}}" class="btn btn-sm btn-warning mr-5 mb-5"><i
                                         class="bx bx-edit-alt"></i></a>
-                                <a href="deletepersonal/{{$row->id}}" class="btn btn-sm btn-danger mr-5 mb-5"><i
+                                @if((Auth::user()->role ?? '') == 'super admin')
+                                <a onclick="return confirm('Yakin untuk menghapus data ini?')"
+                                    href="deletemastersensor/{{$row->id}}" class="btn btn-sm btn-danger mr-5 mb-5"><i
                                         class="bx bx-eraser"></i></a>
+                                @endif
+                                @if((Auth::user()->role ?? '') == 'super admin' || (Auth::user()->role ?? '') == 'admin'
+                                )
+                                <a onclick="return confirm('Yakin untuk menghapus data ini?')"
+                                    href="softdeletemastersensor/{{$row->id}}"
+                                    class="btn btn-sm btn-outline-danger mr-5 mb-5"><i class="bx bx-eraser"></i></a>
+                                @endif
                             </td>
+                            @endif
                         </tr>
                         @endforeach
 
@@ -120,32 +128,5 @@
         </div>
     </div>
 
-    <!-- Import Excel -->
-    <div class="modal fade" id="importCovid" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <form method="post" action="{{ route('importUser') }}" enctype="multipart/form-data">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Import Data Covid</h5>
-                    </div>
-                    <div class="modal-body">
-
-                        {{ csrf_field() }}
-
-                        <label>Pilih file excel</label>
-                        <div class="form-group">
-                            <input type="file" name="file" required="required">
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Import</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
 </div>
 @endsection

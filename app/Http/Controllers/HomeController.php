@@ -6,14 +6,12 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Models\UserData;
 
-// untuk Data Covid
-use App\Models\ClaimCovid;
-use App\Models\ClaimCovidHistory;
-use App\Models\ClaimVaksin;
-use App\Models\ClaimGejala;
-use App\Models\ClaimIsolasi;
-use App\Models\ClaimIsolasiTerpusat;
-use App\Models\ClaimIsolasiRSLainnya;
+// Model Untuk Sensor Dan Hardware
+use App\Models\MasterSensor;
+use App\Models\Hardware;
+use App\Models\HardwareDetail;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
 
 
 use App\Models\Info;
@@ -49,14 +47,17 @@ class HomeController extends Controller
 
         $user = Auth::user();
         $complete = UserData::where('id_user',$user->id)->get()->first();
-        $data = ClaimCovid::where('id_user',$user->id)->get()->last();
+        
+        $sensorValues = [];
+        $datasets = [];
+        $labels = [];
+        $chartData = [];
+        $simplifiedData=[];
+        $latitude=[];
+        $longitude=[];
 
-        $notification_isoman = ClaimCovid::where('status_verified',0)->count();
-        $notification_vaksin = ClaimVaksin::where('status_verified',0)->count();
-        // return $notification_vaksin;
-        $total_notification = $notification_isoman + $notification_vaksin;
-
-        return view('home', compact('complete','user','data','notification_isoman','total_notification','notification_vaksin'));
+        return view('home', compact('complete','user','sensorValues','datasets','labels','chartData','simplifiedData','latitude','longitude'));
+ 
     }
     public function profile()
     {
@@ -65,9 +66,8 @@ class HomeController extends Controller
 
         $user = Auth::user();
         $complete = UserData::where('id_user',$user->id)->get()->first();
-        $data = ClaimCovid::where('id_user',$user->id)->get()->last();
         
-        return view('profile', compact('complete','user','data'));
+        return view('profile', compact('complete','user'));
     }
     public function dataoverall()
     {
@@ -108,91 +108,83 @@ class HomeController extends Controller
         return view('informasi',compact('informasi','complete','user')); 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-     
-    public function editinfo(Request $request)
-    {
-        Info::where('id',1)->update(
-                [
-                        'text'=>$request->isitext,
-                    ]
-                );
-        return back()->with('message','Data berhasil diubah !');
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-    
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function chart(){
         return view('chart');
     }
 
-    public function goodbye(){
-        Artisan::call('migrate');
+    public function indexFindSensor()
+    {
+        $Role = Auth::user()->role;
+        $Check = UserData::where('id_user',Auth::user()->id)->first();
 
-        return 'Database migration success.';
+        $user = Auth::user();
+        $complete = UserData::where('id_user',$user->id)->get()->first();
+        
+        $sensorValues = [];
+        $datasets = [];
+        $labels = [];
+        $chartData = [];
+        $simplifiedData=[];
+        $latitude=[];
+        $longitude=[];
+
+        return view('homefindsensor', compact('complete','user','sensorValues','datasets','labels','chartData','simplifiedData','latitude','longitude'));
+    }
+
+    public function LoadData(Request $request)
+    {
+        $records = TransactionDetail::join('hardware', 'transaction_detail.hardware', '=', 'hardware.hardware')
+        ->join('transaction','transaction_detail.trans_id', '=', 'transaction.id')
+        ->where('hardware.hardware', $request->hardware)
+        ->whereBetween('transaction.created_at', [$request->start_date, $request->end_date])
+        ->get();
+
+        $groupedCollection = $records->groupBy(function ($item) {
+            // Convert the 'created_at' timestamp to just the date format (Y-m-d)
+            return substr($item['created_at'], 0, 10);
+        });
+
+        if ($records->isEmpty()) {
+            // return '0';
+            return redirect('findsensor')->with('warning','Tidak ada data !');
+        }
+
+        $latitude = $records->first()->latitude;
+        $longitude = $records->first()->longitude; 
+        $sensorValues= [];
+        $datasets= [];
+        $labels=[];
+
+        // <-- Default --> 
+        $user = Auth::user();
+        $complete = UserData::where('id_user',$user->id)->get()->first();
+        // <-- End Default -->
+
+        $chartData = [];
+        $simplifiedData = [];
+
+            // Iterate through the $groupedCollection
+            foreach ($groupedCollection as $date => $entries) {
+                // Initialize an empty array for each date
+                $dateData = [];
+
+                // Iterate through the entries for this date
+                foreach ($entries as $entry) {
+                    // Extract the required fields for each entry
+                    $entryData = [
+                        'hardware' => $entry['hardware'],
+                        'sensor' => $entry['sensor'],
+                        'value' => $entry['value'],
+                    ];
+
+                    // Add this entry data to the date's array
+                    $dateData[] = $entryData;
+                }
+
+                // Add the date's data to the simplifiedData array
+                $simplifiedData[$date] = $dateData;
+            }
+
+        return view('sensorhome', compact('complete','user','sensorValues','datasets','labels','chartData','simplifiedData','latitude','longitude'));
     }
 }

@@ -12,6 +12,13 @@ use App\Models\ClaimVaksin;
 use App\Models\ClaimVaksinHistory;
 use App\Models\UserData;
 
+// Model Untuk Sensor Dan Hardware
+use App\Models\MasterSensor;
+use App\Models\Hardware;
+use App\Models\HardwareDetail;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
+
 class GraphController extends Controller
 {
     // Daily Positive Case Graph
@@ -64,5 +71,10 @@ class GraphController extends Controller
         $data->push(count($novaksin));
         $labels->push("Belum Vaksin");
         return['number' => $data, 'labels' => $labels];
+    }
+
+    public function graphSensor()
+    {
+        
     }
 }

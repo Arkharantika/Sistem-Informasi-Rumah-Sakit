@@ -23,47 +23,20 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0 p-0">
                     <li class="breadcrumb-item active" aria-current="page">
-                        <div class="btn btn-outline-dark">Status saat ini </div>
+                        <div class="btn btn-outline-dark">Halaman Profile </div>
                     </li>
                 </ol>
             </nav>
-        </div>&nbsp;&nbsp;
-
-        @if(($data ?? '') == null)
-        <div class="btn btn-primary "> Belum Ada </div>
-        @endif
-        @if(($data->sembuh ?? '') == 'belum')
-        <div class="btn btn-danger "> Terinfeksi Covid 19 !!</div>
-        @endif
-        @if(($data->sembuh ?? '') == 'sudah')
-        <div class="btn btn-success "> Sudah Sembuh ! </div>
-        @endif
-
-        &nbsp;&nbsp;
-
-        @if(($vaksin ?? '') != null)
-        <div class="btn btn-primary "> Sudah Vaksin ! dosis {{$vaksin->dosis_ke}}</div>
-        @endif
-        @if(($vaksin ?? '') == null)
-        <div class="btn btn-warning "> Belum Vaksin Covid ! </div>
-        @endif
-
-        &nbsp;&nbsp;
+        </div>
 
         <div class="ms-auto">
             <div class="btn-group">
                 <button type="button" class="btn btn-outline-secondary btn-md ">settings</button>
-                <button type="button" class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
+                <button type="button"
+                    class="btn btn-secondary split-bg-outline-secondary dropdown-toggle dropdown-toggle-split"
                     data-bs-toggle="dropdown">
                     <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
-                <!-- <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                    <a class="dropdown-item" href="javascript:;">Action</a>
-                    <a class="dropdown-item" href="javascript:;">Another action</a>
-                    <a class="dropdown-item" href="javascript:;">Something else here</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="javascript:;">Separated link</a>
-                </div> -->
             </div>
         </div>
         <!--end breadcrumb-->

@@ -149,11 +149,11 @@
                 <table cellspacing="5" cellpadding="5" border="0">
                     <tbody>
                         <tr>
-                            <td>Minimum date:</td>
+                            <td>Minimum date &nbsp;=>:</td>
                             <td><input type="text" id="min" name="min"></td>
                         </tr>
                         <tr>
-                            <td>Maximum date:</td>
+                            <td>Maximum date &nbsp;=>:</td>
                             <td><input type="text" id="max" name="max"></td>
                         </tr>
                     </tbody>

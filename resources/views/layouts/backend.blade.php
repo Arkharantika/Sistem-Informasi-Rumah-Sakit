@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--favicon-->
-    <link rel="icon" href="{{asset('CostumStyle/images/medicine_a.png')}}" type="image/png" />
+    <link rel="icon" href="{{asset('CostumStyle/images/tatonas.png')}}" type="image/png" />
     <!--plugins-->
     <link href="{{asset('CostumStyle/plugins/simplebar/css/simplebar.css')}}" rel="stylesheet" />
     <link href="{{asset('CostumStyle/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" rel="stylesheet" />
@@ -28,7 +28,10 @@
     <!-- Additional CSS -->
     <link rel="stylesheet" href="{{asset('CostumStyle/style.css')}}">
     <!-- Page Title -->
-    <title>UNS CARE</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <title>Tatonas</title>
 </head>
 
 <!-- Bagian Body Semua Berawal Dari Sini -->
@@ -44,12 +47,12 @@
             <div class="sidebar-header">
                 <div>
                     <!-- <i class='lni lni-heart logo-icon'></i> -->
-                    <img src="{{asset('CostumStyle/images/medicine.png')}}" class="logo-icon" alt="logo icon">
+                    <img src="{{asset('CostumStyle/images/circleblack.png')}}" class="logo-icon" alt="logo icon">
                 </div>
                 <div>
                     <br>
                     <a href="{{url('/home')}}">
-                        <h4 class="logo-text">UNS CARE</h4>
+                        <h4 class="logo-text">TATONAS</h4>
                     </a>
                     <br>
                 </div>
@@ -74,7 +77,7 @@
                     </a>
                 </li>
 
-                @if((Auth::user()->role ?? '') == 'admin')
+                @if((Auth::user()->role ?? '') == 'admin' || (Auth::user()->role ?? '') == 'super admin')
                 <li>
                     <a href="javascript:;" class="">
                         <div class="parent-icon"><i class='bx bx-notepad'></i>
@@ -89,7 +92,7 @@
                 </li>
                 @endif
 
-                @if((Auth::user()->role ?? '') == 'user' || (Auth::user()->role ?? '') == 'admin'
+                <!-- @if((Auth::user()->role ?? '') == 'user' || (Auth::user()->role ?? '') == 'admin'
                 || (Auth::user()->role ?? '') == 'operator')
                 <li>
                     <a href="javascript:;" class="">
@@ -114,57 +117,58 @@
                 @endif
                 
                 <li>
-                    <a href="javascript:;" class="">
-                        <div class="parent-icon"><i class='bx bx-list-ul'></i>
-                        </div>
-                        <div class="menu-title">Data Covid UNS</div>
-                    </a>
-                    <ul>
-                        <li> <a href="{{url('/datacovidoverall')}}"><i class="bx bx-right-arrow-alt"></i>Data Covid
-                                Overall</a>
-                        </li>
-                        @if(($complete->status ?? '') == 'dokter' && ($complete->verified ?? '') == 'yes'||
-                        (Auth::user()->role ?? '') == 'admin'||(Auth::user()->role ?? '') == 'operator' ||
-                        ($complete->status ?? '') == 'koas dokter' && ($complete->verified ?? '') == 'yes' ||
-                        ($complete->status ?? '') == 'tenaga medis' && ($complete->verified ?? '') == 'yes')
-                        <li> <a href="{{url('/admin/datapositifcovid')}}"><i class="bx bx-right-arrow-alt"></i>Data
-                                Positif Covid</a>
-                        </li>
-
-                        <li> <a href="{{url('/admin/datavaksin')}}"><i class="bx bx-right-arrow-alt"></i>Data
-                                Vaksinasi</a>
-                        </li>
-                        <!-- <li> <a href="{{url('/admin/datagejala')}}"><i class="bx bx-right-arrow-alt"></i>Data User Bergejala Covid</a>
-                            </li> -->
-                        <li> <a href="{{url('/admin/dataisolasi')}}"><i class="bx bx-right-arrow-alt"></i>Data User
-                                Yang Sedang Isolasi</a>
-                        </li>
-                        @endif
-                    </ul>
-                </li>
-                @if((Auth::user()->role == 'admin') || (Auth::user()->role == 'operator'))
-                <li>
-                    <a href="{{url('/databantuan')}}" class="">
-                        <div class="parent-icon"><i class='bx bx-folder'></i>
-                        </div>
-                        <div class="menu-title">Data Bantuan Covid</div>
-                    </a>
-                </li>
-                @endif
-                <li>
-                    <a href="{{url('/chatify')}}" class="">
-                        <div class="parent-icon"><i class='bx bxs-chat'></i>
-                        </div>
-                        <div class="menu-title">Layanan Konsultasi Pribadi</div>
-                    </a>
-                </li>
-                <li>
                     <a href="{{url('/informasi')}}" class="">
                         <div class="parent-icon"><i class='bx bxs-info-square'></i>
                         </div>
                         <div class="menu-title">Informasi Dan Kontak Penting</div>
                     </a>
+                </li> -->
+
+                <!-- BAGIAN TATONAS -->
+                <li>
+                    <a href="{{url('/findsensor')}}" class="">
+                        <div class="parent-icon"><i class='bx bx-search-alt' ></i>
+                        </div>
+                        <div class="menu-title">Find Sensor</div>
+                    </a>
                 </li>
+                <li>
+                    <a href="{{url('/mastersensor')}}" class="">
+                        <div class="parent-icon"><i class='bx bx-dialpad-alt'></i>
+                        </div>
+                        <div class="menu-title">Master Sensor</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/hardware')}}" class="">
+                        <div class="parent-icon"><i class='bx bx-border-all'></i>
+                        </div>
+                        <div class="menu-title">Hardware</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/hardwaredetail')}}" class="">
+                        <div class="parent-icon"><i class='bx bxs-grid'></i>
+                        </div>
+                        <div class="menu-title">Hardware Detail</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/transaction')}}" class="">
+                        <div class="parent-icon"><i class='bx bx-transfer-alt'></i>
+                        </div>
+                        <div class="menu-title">Transaction</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{url('/transactiondetail')}}" class="">
+                        <div class="parent-icon"><i class='bx bxs-data'></i>
+                        </div>
+                        <div class="menu-title">Transaction Detail</div>
+                    </a>
+                </li>
+                <!-- END TATONAS -->
+
             </ul>
             <!--end navigation-->
 
@@ -260,104 +264,105 @@
     <!--end wrapper-->
 
     <!--start switcher-->
-    <div class="switcher-wrapper">
-        <div class="switcher-btn"> <i class='bx bx-cog bx-spin'></i>
-        </div>
-        <div class="switcher-body">
-            <div class="d-flex align-items-center">
-                <h5 class="mb-0 text-uppercase">Theme Customizer</h5>
-                <button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
+        <!-- <div class="switcher-wrapper">
+            <div class="switcher-btn"> <i class='bx bx-cog bx-spin'></i>
             </div>
-            <hr />
-            <h6 class="mb-0">Theme Styles</h6>
-            <hr />
-            <div class="d-flex align-items-center justify-content-between">
+            <div class="switcher-body">
+                <div class="d-flex align-items-center">
+                    <h5 class="mb-0 text-uppercase">Theme Customizer</h5>
+                    <button type="button" class="btn-close ms-auto close-switcher" aria-label="Close"></button>
+                </div>
+                <hr />
+                <h6 class="mb-0">Theme Styles</h6>
+                <hr />
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
+                        <label class="form-check-label" for="lightmode">Light</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
+                        <label class="form-check-label" for="darkmode">Dark</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
+                        <label class="form-check-label" for="semidark">Semi Dark</label>
+                    </div>
+                </div>
+                <hr />
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="lightmode" checked>
-                    <label class="form-check-label" for="lightmode">Light</label>
+                    <input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
+                    <label class="form-check-label" for="minimaltheme">Minimal Theme</label>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="darkmode">
-                    <label class="form-check-label" for="darkmode">Dark</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="semidark">
-                    <label class="form-check-label" for="semidark">Semi Dark</label>
-                </div>
-            </div>
-            <hr />
-            <div class="form-check">
-                <input class="form-check-input" type="radio" id="minimaltheme" name="flexRadioDefault">
-                <label class="form-check-label" for="minimaltheme">Minimal Theme</label>
-            </div>
-            <hr />
-            <h6 class="mb-0">Header Colors</h6>
-            <hr />
-            <div class="header-colors-indigators">
-                <div class="row row-cols-auto g-3">
-                    <div class="col">
-                        <div class="indigator headercolor1" id="headercolor1"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor2" id="headercolor2"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor3" id="headercolor3"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor4" id="headercolor4"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor5" id="headercolor5"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor6" id="headercolor6"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor7" id="headercolor7"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator headercolor8" id="headercolor8"></div>
+                <hr />
+                <h6 class="mb-0">Header Colors</h6>
+                <hr />
+                <div class="header-colors-indigators">
+                    <div class="row row-cols-auto g-3">
+                        <div class="col">
+                            <div class="indigator headercolor1" id="headercolor1"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor2" id="headercolor2"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor3" id="headercolor3"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor4" id="headercolor4"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor5" id="headercolor5"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor6" id="headercolor6"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor7" id="headercolor7"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator headercolor8" id="headercolor8"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <hr />
-            <h6 class="mb-0">Sidebar Backgrounds</h6>
-            <hr />
-            <div class="header-colors-indigators">
-                <div class="row row-cols-auto g-3">
-                    <div class="col">
-                        <div class="indigator sidebarcolor1" id="sidebarcolor1"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor2" id="sidebarcolor2"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor3" id="sidebarcolor3"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor4" id="sidebarcolor4"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor5" id="sidebarcolor5"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor6" id="sidebarcolor6"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor7" id="sidebarcolor7"></div>
-                    </div>
-                    <div class="col">
-                        <div class="indigator sidebarcolor8" id="sidebarcolor8"></div>
+                <hr />
+                <h6 class="mb-0">Sidebar Backgrounds</h6>
+                <hr />
+                <div class="header-colors-indigators">
+                    <div class="row row-cols-auto g-3">
+                        <div class="col">
+                            <div class="indigator sidebarcolor1" id="sidebarcolor1"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor2" id="sidebarcolor2"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor3" id="sidebarcolor3"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor4" id="sidebarcolor4"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor5" id="sidebarcolor5"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor6" id="sidebarcolor6"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor7" id="sidebarcolor7"></div>
+                        </div>
+                        <div class="col">
+                            <div class="indigator sidebarcolor8" id="sidebarcolor8"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </div> -->
     <!--end switcher-->
 
     <!-- Additional Css -->
     <!-- <script src="{{asset('CostumStyle/script.js')}}"></script> -->
+  
     <!-- Bootstrap JS -->
     <script src="{{asset('CostumStyle/js/bootstrap.bundle.min.js')}}"></script>
     <!--plugins-->
